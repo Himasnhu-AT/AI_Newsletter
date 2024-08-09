@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  newletteraibot:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: newletteraibot

@@ -1,0 +1,47 @@
+FROM ubuntu:22.04
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.11 \
+    python3-pip \
+    build-essential
+
+RUN apt-get install -y --no-install-recommends \
+    libgirepository1.0-dev \
+    libcairo2-dev \
+    libpango1.0-dev \
+    libgdk-pixbuf2.0-dev \
+    libffi-dev \
+    libglib2.0-dev
+
+RUN apt-get install python3.11-venv -y
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+COPY ./Bot /app
+COPY ./setup.py /app
+
+# Create and activate a virtual environment
+RUN python3.11 -m venv venv
+ENV PATH="/app/venv/bin:$PATH"
+
+# Install project dependencies and Cython within the virtual environment
+RUN pip3 install -U --no-cache-dir -r requirements.txt
+RUN pip install cython==3.0.7  # Downgrade Cython version
+
+# Debugging: Show versions and check Cython installation
+RUN python3 --version
+RUN pip --version
+RUN pip show cython
+
+# Build Cython extensions
+RUN pip show cython && python3 setup.py build_ext --inplace
+
+# Clean up generated files
+RUN find /app/Bot -type f -name "*.c" -delete
+RUN find /app/Bot -type f -name "*.py" -delete
+
+COPY ./Bot/cython.py /app/Bot/
+
+CMD ["python3", "bot/cython.py"]
