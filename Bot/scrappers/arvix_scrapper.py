@@ -44,11 +44,31 @@ def get_arxiv_papers(search_terms=("artificial intelligence", "natural language 
     return pdf_filenames, result_pdf_dict
 
 def search_pdf(pdf_filename):
+    """
+    Read a pdf file and return a list of pages.
+
+    Args:
+        pdf_filename (str): Filename of the pdf file to read.
+
+    Returns:
+        list: List of pages from the pdf file.
+    """
+
     loader = PyPDFLoader(pdf_filename)
     pages = loader.load_and_split()
     return pages
 
 def embed_pdf(pages):
+    """
+    Embed the text from a list of pages and store the embeddings in a Milvus database.
+
+    Args:
+        pages (list): List of pages to embed.
+
+    Returns:
+        Milvus: Milvus database containing the embeddings.
+    """
+
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     vectordb = Milvus.from_documents(pages, embedding=embeddings, collection_name="arxiv_papers", connection_args={
         # "host": "localhost", "port": "19530"
@@ -57,4 +77,15 @@ def embed_pdf(pages):
     return vectordb
 
 def chain_pdf(vectordb, query):
+    """
+    Get similar papers from a Milvus database based on a query.
+
+    Args:
+        vectordb (Milvus): Milvus database containing the embeddings.
+        query (str): Query to search for similar papers.
+
+    Returns:
+        list: List of similar papers.
+    """
+
     return vectordb.similarity_search(query, k=10)
