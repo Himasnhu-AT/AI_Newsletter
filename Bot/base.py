@@ -70,12 +70,13 @@ def github_repos(date):
 
 def main():
     last_week_date = get_seven_days_ago_date()
-    run_as_test = input("Testing? (y/n): ").lower() == "y"
+    # run_as_test = input("Testing? (y/n): ").lower() == "y"
 
-    if run_as_test:
-        print("Running as test (using dummy data)")
-    else:
-        print("Running as production (using real data)")
+    # if run_as_test:
+        # print("Running as test (using dummy data)")
+    # else:
+        # print("Running as production (using real data)")
+    run_as_test = False
 
     newsletter_gen(
         convert_todays_date(),
