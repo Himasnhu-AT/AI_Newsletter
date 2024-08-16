@@ -1,0 +1,48 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publicBuild:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      # - name: Set up Python
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: "3.11.0"
+
+      - name: Install Python and pip
+        run: |
+          apt-get update
+          apt-get install -y python3.11 python3-pip build-essential
+
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v1
+
+      - name: Langgraph
+        run: |
+          pip3 install langgraph
+
+      - name: Install dependencies
+        run: |
+          pip3 install -r requirements.txt
+          pip3 install -r requirements.public.txt
+
+      - name: Obfuscate the code
+        run: |
+          python3 setupPublic.py build_ext --inplace
+
+      # - name: Log in to Docker Hub
+      #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # - name: Build and Push Docker Image
+      #   run: |
+      #     docker build -t ${{ secrets.DOCKER_USERNAME }}/tos_public:latest .
+      #     docker push ${{ secrets.DOCKER_USERNAME }}/tos_public:latest

@@ -10,7 +10,7 @@ pip3 install -r requirements.txt
 python3 setup.py build_ext --inplace
 
 # Start Docker Compose in detached mode
-docker compose up 
+docker compose up -d 
 
 # # Clean up build artifacts and virtual environment
 # rm -rf venv/
