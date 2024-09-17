@@ -10,12 +10,12 @@ Functions:
 """
 
 from datetime import date
-from utils.date_info import get_seven_days_ago_date, convert_todays_date
-from scrappers.arxiv_scrapper import get_arxiv_papers
-from scrappers.github_scrapper import get_github_repos
-from scrappers.news_scrapper import get_top_10_ai_news
-from writers_room.gemini import GeminiChat
-from formatters.newsletter import newsletter_gen
+from ai_newsletter.utils.date_info import get_seven_days_ago_date, convert_todays_date
+from ai_newsletter.scrappers.arxiv_scrapper import get_arxiv_papers
+from ai_newsletter.scrappers.github_scrapper import get_github_repos
+from ai_newsletter.scrappers.news_scrapper import get_top_10_ai_news
+from ai_newsletter.writers_room.gemini import GeminiChat
+from ai_newsletter.formatters.newsletter import newsletter_gen
 
 def research_papers(testing, search_terms=("artificial intelligence", "natural language processing"), max_results=5):
     """
@@ -69,6 +69,7 @@ def github_repos(date):
     return top_repos
 
 def main():
+    print("starting main")
     last_week_date = get_seven_days_ago_date()
     # run_as_test = input("Testing? (y/n): ").lower() == "y"
 

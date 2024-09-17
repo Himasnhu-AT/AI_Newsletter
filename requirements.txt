@@ -10,3 +10,4 @@ Cython==3.0.11
 langchain_text_splitters
 langchain-community
 langchain
+weasyprint

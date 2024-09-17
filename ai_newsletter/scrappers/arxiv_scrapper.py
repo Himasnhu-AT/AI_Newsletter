@@ -4,7 +4,7 @@ import requests
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_milvus import Milvus, Zilliz
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
 
 def get_arxiv_papers(search_terms=("artificial intelligence", "natural language processing"), max_results=5):
     """
